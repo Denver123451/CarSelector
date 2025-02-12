@@ -9,17 +9,14 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import Button from '@mui/material/Button';
 import Link from "next/link";
+import {IMake} from "@/types/typs";
 
-interface Make {
-    MakeId: string;
-    MakeName: string;
-}
 
 export default function Home() {
 
     const [car, setCar] = useState('');
     const [year, setYear] = useState('');
-    const [makes, setMakes] = useState<Make[]>([]);
+    const [makes, setMakes] = useState<IMake[]>([]);
 
     const getMakes = useCallback(async () => {
         try {
