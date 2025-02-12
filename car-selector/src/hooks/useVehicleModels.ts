@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { ICar } from "@/types/typs";
+import {useState, useEffect} from "react";
+import {ICar} from "@/types/typs";
 
 export function useVehicleModels(makeId: string, year: string) {
     const [cars, setCars] = useState<ICar[]>([]);
@@ -22,12 +22,13 @@ export function useVehicleModels(makeId: string, year: string) {
 
                 const data = await res.json();
 
-                if (!data.Results || data.Results.length === 0) {
+                if (!data.Results || data.Count === 0) {
                     throw new Error("No data found for the selected make and year.");
                 }
 
                 setCars(data.Results);
             } catch (error) {
+
                 setError(error instanceof Error ? error.message : "An unknown error occurred");
             } finally {
                 setLoading(false);
@@ -37,5 +38,5 @@ export function useVehicleModels(makeId: string, year: string) {
         fetchVehicle();
     }, [makeId, year]);
 
-    return { cars, loading, error };
+    return {cars, loading, error};
 }
