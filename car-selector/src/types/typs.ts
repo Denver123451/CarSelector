@@ -1,26 +1,26 @@
 export interface ICar {
-    Make_ID: number;
-    Make_Name: string;
-    Model_ID: number;
-    Model_Name: string;
+  Make_ID: number;
+  Make_Name: string;
+  Model_ID: number;
+  Model_Name: string;
 }
 
 export interface IMake {
-    MakeId: string;
-    MakeName: string;
+  MakeId: string;
+  MakeName: string;
 }
 
 export interface ITableData {
-    data: ICar[];
+  data: ICar[];
 }
 
 export interface ICarHeader {
-    makeId: string;
-    year: string;
+  makeId: string;
+  year: string;
 }
 
 export interface IButtonProps {
-    href: string;
-    disabled?: boolean;
-    text: string;
+  href: string;
+  disabled?: boolean;
+  text: string;
 }
