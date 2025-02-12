@@ -1,8 +1,8 @@
 import Image from "next/image";
 import {ICarHeader} from "@/types/typs";
 
-export function CarHeader({makeId, year} : ICarHeader) {
-    return(
+export function CarHeader({makeId, year}: ICarHeader) {
+    return (
         <>
             <Image
                 className="dark:invert"

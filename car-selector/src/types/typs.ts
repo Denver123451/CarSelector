@@ -14,7 +14,13 @@ export interface ITableData {
     data: ICar[];
 }
 
-export interface ICarHeader{
+export interface ICarHeader {
     makeId: string;
     year: string;
+}
+
+export interface IButtonProps {
+    href: string;
+    disabled?: boolean;
+    text: string;
 }
