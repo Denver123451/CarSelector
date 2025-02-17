@@ -8,12 +8,22 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import CustomButton from '@/components/CustomButton';
 import { useCarSelector } from '@/hooks/useCarSelector';
+import {IMake} from "@/types/typs";
 
 export default function Home() {
-  const { car, setCar, year, setYear, makes, years, isDisabled, link } = useCarSelector();
+  const { car, setCar, year, setYear, makes, years, isDisabled, link, isLoading, isError } =
+      useCarSelector();
 
   const handleChange = (event: SelectChangeEvent) => setCar(event.target.value as string);
   const handleChangeYear = (event: SelectChangeEvent) => setYear(Number(event.target.value));
+
+  if (isLoading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (isError) {
+    return <div>Ошибка загрузки данных</div>;
+  }
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -38,11 +48,15 @@ export default function Home() {
               value={car || ''}
               onChange={handleChange}
             >
-              {makes.map((item) => (
-                <MenuItem key={item.MakeId} value={item.MakeId}>
-                  {item.MakeName}
-                </MenuItem>
-              ))}
+              {makes.length > 0 ? (
+                  makes.map((item: IMake) => (
+                      <MenuItem key={item.MakeId} value={item.MakeId}>
+                        {item.MakeName}
+                      </MenuItem>
+                  ))
+              ) : (
+                  <MenuItem disabled>Loading...</MenuItem>
+              )}
             </Select>
             <FormHelperText>Select make</FormHelperText>
           </FormControl>
