@@ -1,31 +1,38 @@
-import useSWR from 'swr';
-import { ICar } from '@/types/typs';
+'use client';
 
-const fetcher = async (url: string) => {
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`Failed to fetch data: ${res.statusText}`);
-  }
-  const data = await res.json();
-  if (!data.Results || data.Count === 0) {
-    throw new Error('No data found for the selected make and year.');
-  }
-  return data;
-};
+import { useQuery } from '@tanstack/react-query';
+import { ITableData } from '@/types/typs';
 
 export function useVehicleModels(makeId: string, year: string) {
+  const enabled = Boolean(makeId && year);
 
-  const shouldFetch = makeId && year;
+  const { data, error, isLoading } = useQuery<ITableData>({
+    queryKey: ['vehicleModels', makeId, year],
+    queryFn: async () => {
+      const res = await fetch(
+        `https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeIdYear/makeId/${makeId}/modelyear/${year}?format=json`
+      );
+      if (!res.ok) {
+        throw new Error(`Failed to fetch data: ${res.statusText}`);
+      }
+      const json = await res.json();
 
-  const { data, error } = useSWR(
-      shouldFetch
-          ? `https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeIdYear/makeId/${makeId}/modelyear/${year}?format=json`
-          : null,
-      fetcher
-  );
+      if (!json.Results) {
+        throw new Error('No data found for the selected make and year.');
+      }
 
-  const cars: ICar[] = data?.Results || [];
-  const loading = !data && !error;
+      return json;
+    },
+    enabled,
+  });
 
-  return { cars, loading, error: error ? error.message : null };
+  const cars = data?.Results || [];
+
+  const errorMsg = error instanceof Error ? error.message : null;
+
+  return {
+    cars,
+    loading: isLoading,
+    error: errorMsg,
+  };
 }

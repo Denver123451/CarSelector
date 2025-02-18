@@ -7,7 +7,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { ITableData } from '@/types/typs';
 
-export default function CustomTable({ data }: ITableData) {
+export default function CustomTable({ Results }: ITableData) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="table">
@@ -20,7 +20,7 @@ export default function CustomTable({ data }: ITableData) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row, index) => (
+          {Results.map((row, index) => (
             <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell>{row.Make_Name}</TableCell>
               <TableCell align="right">{row.Make_ID}</TableCell>

@@ -6,12 +6,12 @@ export interface ICar {
 }
 
 export interface IMake {
-  MakeId: string;
   MakeName: string;
+  MakeId: number;
 }
 
 export interface ITableData {
-  data: ICar[];
+  Results: ICar[];
 }
 
 export interface ICarHeader {
@@ -23,4 +23,11 @@ export interface IButtonProps {
   href: string;
   disabled?: boolean;
   text: string;
+}
+
+export interface IMakesResponse {
+  Results: Array<{
+    MakeId: number;
+    MakeName: string;
+  }>;
 }

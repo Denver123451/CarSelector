@@ -1,17 +1,25 @@
+'use client';
+
 import { useState, useMemo } from 'react';
-import useSWR from 'swr';
-
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { useQuery } from '@tanstack/react-query';
+import { IMakesResponse } from '@/types/typs';
 
 export function useCarSelector() {
   const [car, setCar] = useState<string | null>(null);
   const [year, setYear] = useState<number | null>(null);
 
-  const { data, error } = useSWR(
-      'https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json',
-      fetcher
-  );
+  const { data, error, isLoading } = useQuery<IMakesResponse>({
+    queryKey: ['makes'],
+    queryFn: async () => {
+      const res = await fetch(
+        'https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json'
+      );
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return res.json();
+    },
+  });
 
   const makes = data ? data.Results : [];
 
@@ -28,7 +36,7 @@ export function useCarSelector() {
     years,
     isDisabled,
     link,
-    isLoading: !data && !error,
+    isLoading,
     isError: error,
   };
 }

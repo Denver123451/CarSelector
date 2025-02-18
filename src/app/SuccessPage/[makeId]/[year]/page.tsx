@@ -27,7 +27,7 @@ export default function YearPage() {
         ) : loading ? (
           <CircularProgress />
         ) : (
-          <CustomTable data={cars} />
+          <CustomTable Results={cars} />
         )}
 
         <CustomButton href="/" text="to the main page" />
